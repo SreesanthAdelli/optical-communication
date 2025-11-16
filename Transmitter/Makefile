@@ -3,11 +3,11 @@ CC      = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
 
 # Compiler and linker flags
-CFLAGS  = -mcpu=cortex-m4 -mthumb -O0 -g -Wall -ffreestanding -Iinclude
+CFLAGS  = -mcpu=cortex-m4 -mthumb -O0 -g -Wall -ffreestanding -Iinclude -Wextra
 LDFLAGS = -TSTM32F446RE.ld -nostartfiles -Wl,-Map=output.map -nostdlib
 
 # Sources
-SRC     = src/startup.c src/main.c src/GPIO.c src/utilities.c
+SRC     = src/startup.c src/main.c src/GPIO.c src/utilities.c src/transmit.c src/data.c
 TARGET  = firmware
 BIN     = $(TARGET).bin
 ELF     = $(TARGET).elf
