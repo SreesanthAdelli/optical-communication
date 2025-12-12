@@ -6,11 +6,11 @@
 #define LASER_PIN               6
 #define LED_PIN                 5
 #define SYSTEM_CLOCK_HZ         2000000  // 2 MHz
-#define ONE_SECOND        SYSTEM_CLOCK_HZ  // 1 second at 2 MHz clock
+#define ONE_SECOND              SYSTEM_CLOCK_HZ  // 1 second at 2 MHz clock
 #define BUFFER_SIZE             1000
 
 // 2 MHz clock
-const uint8_t bandwidth = 1; // in Hz
+const uint8_t bandwidth = 10; // in Hz
 const uint32_t bitPeriod = SYSTEM_CLOCK_HZ / bandwidth; // in clock cycles
 
 
@@ -51,7 +51,7 @@ void transmitByteCycle(const uint8_t byte) {
 }
 
 
-void transmitBuffer(const uint8_t* buffer, const uint32_t length) {
+void transmitPacket(const uint8_t* buffer, const uint32_t length) {
     for (uint32_t i = 0; i < length; ++i) {
         transmitByteCycle(buffer[i]);
     }

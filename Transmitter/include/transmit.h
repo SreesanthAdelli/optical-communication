@@ -9,4 +9,4 @@ void transmitData(const uint8_t data);
 
 void transmitByteCycle(const uint8_t byte);
 
-void transmitBuffer(const uint8_t* buffer, const uint32_t length);
+void transmitPacket(const uint8_t* buffer, const uint32_t length);
