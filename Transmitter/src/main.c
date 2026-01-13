@@ -2,6 +2,8 @@
 #include "utilities.h"
 #include "data.h"
 #include "transmit.h"
+#include "timer.h"
+#include "clock.h"
 #include <stdint.h>
 #include <stdbool.h>
 #define LASER_PIN               6
@@ -9,7 +11,7 @@
 #define SONG_SIZE               21
 #define PACKET_SIZE             4
 #define START_BYTE             0xFF
-#define END_BYTE               0x00
+#define END_BYTE               0b10101010
 
 
 // We are going to transmit a song, represented as an array of 8-bit values. Each value corresponds to a note, 
@@ -29,6 +31,12 @@ int main(void) {
     // Configure PA6 as output (Laser control)
     setPinDigitalOutput(LASER_PIN);
     setPinDigitalOutput(LED_PIN);
+
+    // Start the clock
+    systemClock_20MHz();
+
+    // Start the timer
+    startTimer();
 
     uint8_t buffer[1];
     uint8_t packet[PACKET_SIZE];

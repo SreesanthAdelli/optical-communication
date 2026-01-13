@@ -1,24 +1,10 @@
 // GPIO pin control implementation
 
 #include "GPIO.h"
-#include "utilities.h"
+#include "stm32f446xx.h"
 #include <stdint.h>
 #include <stdbool.h>
 
-// STM32F446RE GPIO registers (AHB1 base)
-#define RCC_BASE      0x40023800
-#define RCC_AHB1ENR   (*(volatile uint32_t*)(RCC_BASE + 0x30))
-#define RCC_APB2ENR   (*(volatile uint32_t*)(RCC_BASE + 0x44))
-#define GPIOA_MODER   (*(volatile uint32_t*)0x40020000)
-#define GPIOA_ODR     (*(volatile uint32_t*)0x40020014)
-#define ADC_BASE      0x40012000
-#define ADC_CR2       (*(volatile uint32_t*)(ADC_BASE + 0x08))
-#define ADC_SMPR1     (*(volatile uint32_t*)(ADC_BASE + 0x0C))
-#define ADC_SMPR2     (*(volatile uint32_t*)(ADC_BASE + 0x10))
-#define ADC_SQR3      (*(volatile uint32_t*)(ADC_BASE + 0x34))
-#define ADC_SR        (*(volatile uint32_t*)(ADC_BASE + 0x00))
-#define ADC_DR        (*(volatile uint32_t*)(ADC_BASE + 0x4C))
-#define ONE_SECOND    2000000  // 1 second at 2 MHz clock
 
 
 void initializeGPIOA() {
@@ -47,11 +33,6 @@ void setPin(uint8_t pin, bool value) {
 
 void togglePin(uint8_t pin) {
     GPIOA_ODR ^= (1 << pin); // Toggle pin
-}
-
-void flashPin_10(uint8_t pin) {
-    togglePin(pin);
-    delay(0.1 * ONE_SECOND);
 }
 
 void initializeAnalogClock() {
@@ -103,4 +84,12 @@ bool isADCConversionComplete() {
 
 uint16_t readADCData() {
     return ADC_DR;
+}
+
+void full_setup_adc_channel_6(uint8_t sampleTime) {
+    setADCSampleTime_Channel_6(sampleTime);         // Sample Time 3 would be 56 cycles
+    setADCChannel(6);
+    setADCContinuousMode(true);
+    turnOnADC();
+    startADCConversion();
 }
